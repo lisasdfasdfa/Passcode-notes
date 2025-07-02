@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secret Notes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #noteDisplay {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔐 Secret Notes</h2>
+
+  <!-- Input fields -->
+  <textarea id="note" placeholder="Write your secret note here..."></textarea>
+  <input type="password" id="passcode" maxlength="4" placeholder="Enter a 4-digit passcode">
+  <button onclick="saveNote()">Save Note</button>
+
+  <hr>
+
+  <!-- Unlock section -->
+  <input type="password" id="unlockCode" maxlength="4" placeholder="Enter passcode to unlock note">
+  <button onclick="unlockNote()">Unlock Note</button>
+
+  <!-- Hidden note display -->
+  <div id="noteDisplay"></div>
+
+  <script>
+    let savedNote = "";
+    let savedPasscode = "";
+
+    function saveNote() {
+      const note = document.getElementById("note").value.trim();
+      const passcode = document.getElementById("passcode").value.trim();
+
+      if (note === "" || passcode.length !== 4 || isNaN(passcode)) {
+        alert("Please enter a note and a 4-digit numeric passcode.");
+        return;
+      }
+
+      savedNote = note;
+      savedPasscode = passcode;
+
+      document.getElementById("note").value = "";
+      document.getElementById("passcode").value = "";
+      document.getElementById("noteDisplay").style.display = "none";
+
+      alert("Note saved and locked!");
+    }
+
+    function unlockNote() {
+      const enteredCode = document.getElementById("unlockCode").value.trim();
+
+      if (enteredCode === savedPasscode) {
+        document.getElementById("noteDisplay").innerText = savedNote;
+        document.getElementById("noteDisplay").style.display = "block";
+      } else {
+        alert("Incorrect passcode!");
+      }
+
+      document.getElementById("unlockCode").value = "";
+    }
+  </script>
+</body>
+</html>
